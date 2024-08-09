@@ -28,9 +28,12 @@ def parse_page(response, lang1, lang2):
     """Parse the page content and extract bilingual text."""
     soup = BeautifulSoup(response.content, 'html.parser')
     
-    # Remove unnecessary tags
-    for tag in soup.find_all(['a', 'font']):
+    for a_tag in soup.find_all('a'):
+        a_tag.decompose()
+
+    for tag in soup.find_all('font', size='+2'):
         tag.decompose()
+        
     
     td_lang1 = soup.find_all('td', class_=LANG_TDTAG[lang1])
     td_lang2 = soup.find_all('td', class_=LANG_TDTAG[lang2])
